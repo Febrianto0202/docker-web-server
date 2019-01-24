@@ -1,0 +1,35 @@
+version: '3'
+
+networks:
+
+  app-tier:
+    driver: bridge
+
+services:
+
+  phpfpm:
+    container_name: phpfpm 
+    build:
+      context: ./docker/php/${PHP_VERSION}/${OS_VERSION}
+      dockerfile: Dockerfile
+    networks:
+      - app-tier
+    volumes:
+      - ./php/conf:/opt/bitnami/php/etc/conf.d 
+      - ./public-html:/app
+
+  nginx:
+    container_name: nginx
+    build:
+      context: ./docker/nginx/${NGINX_VERSION}/${OS_VERSION}
+      dockerfile: Dockerfile
+    depends_on:
+      - phpfpm
+    networks:
+      - app-tier
+    ports:
+      - '80:8080'
+      - '443:8443'
+    volumes:
+      - ./nginx/vhost/test.conf:/opt/bitnami/nginx/conf/vhosts/test.conf
+      - ./nginx/vhost/ciapp.conf:/opt/bitnami/nginx/conf/vhosts/ciapp.conf
