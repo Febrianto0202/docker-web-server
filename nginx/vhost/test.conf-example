@@ -2,7 +2,7 @@ server {
   listen 0.0.0.0:8080;
   server_name mytest.com;
 
-  root /app/test;
+  root /public_html/test;
 
   location / {
     try_files $uri $uri/index.php;
