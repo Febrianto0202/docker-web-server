@@ -9,10 +9,10 @@
 eval "$(nginx_env)"
 
 for dir in "/bitnami" "$NGINX_VOLUME" "$NGINX_CONFDIR" "$NGINX_BASEDIR" "$NGINX_TMPDIR"; do
-    # ensure_dir_exists "$dir"
-    if [ ! -d "$dir" ]; then
-        mkdir -p "$dir";
-    fi;
+    ensure_dir_exists "$dir"
+    # if [ ! -d "$dir" ]; then
+    #     mkdir -p "$dir";
+    # fi;
     chmod -R g+rwX "$dir"
 done
 
