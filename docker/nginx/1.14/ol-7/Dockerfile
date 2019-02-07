@@ -16,6 +16,8 @@ RUN ln -sf /dev/stdout /opt/bitnami/nginx/logs/access.log
 RUN ln -sf /dev/stderr /opt/bitnami/nginx/logs/error.log
 
 COPY rootfs /
+RUN chmod -R 700 *.sh
+RUN ["chmod", "+x", "*.sh"]
 RUN /prepare.sh
 ENV BITNAMI_APP_NAME="nginx" \
     BITNAMI_IMAGE_VERSION="1.14.2-ol-7-r53" \
