@@ -14,6 +14,8 @@ RUN . ./libcomponent.sh && component_unpack "mysql" "8.0.15-0" --checksum 6742c3
 RUN mkdir /docker-entrypoint-initdb.d
 
 COPY rootfs /
+RUN chmod 755 /*.sh
+RUN chmod a+x /*.sh
 RUN /prepare.sh
 ENV ALLOW_EMPTY_PASSWORD="no" \
     BITNAMI_APP_NAME="mysql" \

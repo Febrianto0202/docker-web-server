@@ -18,6 +18,10 @@ data/mysql/*
 !data/mysql/.keepfile
 logs/mysql/*
 !logs/mysql/.keepfile
+logs/php/*
+!logs/php/.keepfile
+logs/nginx/*
+!logs/nginx/.keepfile
 
 ######################################
 # GENERIC
