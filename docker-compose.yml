@@ -9,27 +9,58 @@ services:
 
   phpfpm:
     container_name: phpfpm 
+    restart: always
     build:
       context: ./docker/php/${PHP_VERSION}/${OS_VERSION}
       dockerfile: Dockerfile
     networks:
       - app-tier
     volumes:
-      - ./php/conf:/opt/bitnami/php/etc/conf.d 
+      - ./config/php/conf:/opt/bitnami/php/etc/conf.d:ro,cached
+      - ./logs/php/${PHP_VERSION}:/opt/bitnami/php/logs:rw,cached
       - ./public-html:/app
 
-  nginx:
+  mysql:
+    container_name: mysql
+    hostname: mysql
+    build: 
+      context: ./docker/mysql/${DB_VERSION}/${OS_VERSION}
+      dockerfile: Dockerfile
+    labels:
+      kompose.service.type: nodeport
+    restart: always
+    networks: 
+      - app-tier
+    ports:
+      - "${ENV_MYSQL_PORT}:3306"
+    volumes:
+      - ./data/mysql/${DB_VERSION}:/bitnami/mysql/data:rw,cached
+      - ./logs/mysql/${DB_VERSION}:/opt/bitnami/mysql/logs:rw,cached
+    environment:
+      # ALLOW_EMPTY_PASSWORD is recommended only for development.
+      - ALLOW_EMPTY_PASSWORD=${ENV_ALLOW_EMPTY_PASSWORD}
+      # MYSQL_ROOT_PASSWORD is recommended only for production.
+      - MYSQL_ROOT_PASSWORD=${ENV_MYSQL_ROOT_PASSWORD}
+      # CREATE USER & DATABASE
+      - MYSQL_USER=${ENV_MYSQL_USER}
+      - MYSQL_PASSWORD=${ENV_MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${ENV_MYSQL_DATABASE}
+
+  httpd:
     container_name: nginx
     build:
       context: ./docker/nginx/${NGINX_VERSION}/${OS_VERSION}
       dockerfile: Dockerfile
+    restart: always
     depends_on:
       - phpfpm
+      - mysql
     networks:
       - app-tier
     ports:
       - '80:8080'
-      - '443:8443'
+      - '443:443'
     volumes:
-      - ./nginx/vhost/test.conf:/opt/bitnami/nginx/conf/vhosts/test.conf
-      - ./nginx/vhost/ciapp.conf:/opt/bitnami/nginx/conf/vhosts/ciapp.conf
+      - ./config/nginx/vhost/test.conf:/opt/bitnami/nginx/conf/vhosts/test.conf
+      - ./config/nginx/vhost/ciapp.conf:/opt/bitnami/nginx/conf/vhosts/ciapp.conf
+      - ./logs/nginx/${NGINX_VERSION}:/opt/bitnami/nginx/logs:rw,cached

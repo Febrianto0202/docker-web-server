@@ -6,7 +6,8 @@ ENV BITNAMI_PKG_CHMOD="-R g+rwX" \
     HOME="/" \
     OS_ARCH="x86_64" \
     OS_FLAVOUR="ol-7" \
-    OS_NAME="linux"
+    OS_NAME="linux" \
+    TIMEZONE="Asia/Jakarta"
 
 # Install required system packages and dependencies
 RUN install_packages glibc keyutils-libs krb5-libs libcom_err libselinux nss-softokn-freebl openssl-libs pcre zlib
@@ -26,7 +27,11 @@ ENV BITNAMI_APP_NAME="nginx" \
     NGINX_HTTP_PORT_NUMBER="8080" \
     PATH="/opt/bitnami/nginx/sbin:$PATH"
 
-EXPOSE 8080
+RUN rm -f /etc/localtime
+RUN ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+RUN date
+
+EXPOSE 8080 443
 
 WORKDIR /app
 USER 1001

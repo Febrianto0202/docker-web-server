@@ -1,6 +1,8 @@
 FROM bitnami/oraclelinux-runtimes:7-php
 LABEL maintainer "Bitnami <containers@bitnami.com>"
 
+ENV TIMEZONE="Asia/Jakarta"
+
 # Install required system packages and dependencies
 RUN install_packages bzip2-libs ca-certificates cyrus-sasl-lib freetds freetype glibc gmp gnutls keyutils-libs krb5-libs libcom_err libcurl libffi libgcc libgcrypt libgpg-error libicu libidn libjpeg-turbo libmemcached libpng libselinux libssh2 libstdc++ libtasn1 libtidy libxml2 libxslt ncurses-libs nettle nspr nss nss-softokn-freebl nss-util openldap openssl-libs p11-kit pcre  readline wget xz-libs zlib
 RUN wget -nc -P /tmp/bitnami/pkg/cache/ https://downloads.bitnami.com/files/stacksmith/php-7.3.1-1-linux-x86_64-ol-7.tar.gz && \
@@ -13,6 +15,10 @@ RUN mkdir /opt/bitnami/php/logs && touch /opt/bitnami/php/logs/php-fpm.log
 ENV BITNAMI_APP_NAME="php-fpm" \
     BITNAMI_IMAGE_VERSION="7.3.1-ol-7-r13" \
     PATH="/opt/bitnami/php/bin:/opt/bitnami/php/sbin:/opt/bitnami/php/sbin:$PATH"
+
+RUN rm -f /etc/localtime
+RUN ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+RUN date
 
 EXPOSE 9000
 

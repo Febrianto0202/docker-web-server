@@ -6,7 +6,8 @@ ENV BITNAMI_PKG_CHMOD="-R g+rwX" \
     HOME="/" \
     OS_ARCH="amd64" \
     OS_FLAVOUR="debian-9" \
-    OS_NAME="linux"
+    OS_NAME="linux" \
+    TIMEZONE="Asia/Jakarta"
 
 # Install required system packages and dependencies
 RUN install_packages libc6 libpcre3 libssl1.1 zlib1g
@@ -25,6 +26,10 @@ ENV BITNAMI_APP_NAME="nginx" \
     NGINX_HTTPS_PORT_NUMBER="443" \
     NGINX_HTTP_PORT_NUMBER="8080" \
     PATH="/opt/bitnami/nginx/sbin:$PATH"
+
+RUN rm -f /etc/localtime
+RUN ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+RUN date
 
 EXPOSE 8080
 
