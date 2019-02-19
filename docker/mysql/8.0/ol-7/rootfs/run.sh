@@ -8,7 +8,6 @@ set -o pipefail
 
 . /libmysql.sh
 . /libos.sh
-. /liblog.sh
 
 # Load MySQL env. variables
 eval "$(mysql_env)"
@@ -22,6 +21,3 @@ if am_i_root; then
 else
     exec "${DB_SBINDIR}/mysqld" "${flags[@]}"
 fi
-
-info "** Seting Timezone **"
-info "Time is $(date)"

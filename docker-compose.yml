@@ -16,9 +16,9 @@ services:
     networks:
       - app-tier
     volumes:
-      - ./config/php/conf:/opt/bitnami/php/etc/conf.d:ro,cached
-      - ./logs/php/${PHP_VERSION}:/opt/bitnami/php/logs:rw,cached
-      - ./public-html:/app
+      - ./config/php/conf:/opt/bitnami/php/etc/conf.d:ro
+      # - ./logs/php/${PHP_VERSION}:/opt/bitnami/php/logs:rw
+      - ./public-html:/app:rw
 
   mysql:
     container_name: mysql
@@ -34,8 +34,8 @@ services:
     ports:
       - "${ENV_MYSQL_PORT}:3306"
     volumes:
-      - ./data/mysql/${DB_VERSION}:/bitnami/mysql/data:rw,cached
-      - ./logs/mysql/${DB_VERSION}:/opt/bitnami/mysql/logs:rw,cached
+      - ./data/mysql/${DB_VERSION}:/bitnami/mysql/data:rw
+      - ./logs/mysql/${DB_VERSION}:/opt/bitnami/mysql/logs:rw
     environment:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       - ALLOW_EMPTY_PASSWORD=${ENV_ALLOW_EMPTY_PASSWORD}
@@ -61,6 +61,7 @@ services:
       - '80:8080'
       - '443:443'
     volumes:
-      - ./config/nginx/vhost/test.conf:/opt/bitnami/nginx/conf/vhosts/test.conf
-      - ./config/nginx/vhost/ciapp.conf:/opt/bitnami/nginx/conf/vhosts/ciapp.conf
-      - ./logs/nginx/${NGINX_VERSION}:/opt/bitnami/nginx/logs:rw,cached
+      - ./config/nginx/vhost/test.conf:/opt/bitnami/nginx/conf/vhosts/test.conf:ro
+      - ./config/nginx/vhost/ciapp.conf:/opt/bitnami/nginx/conf/vhosts/ciapp.conf:ro
+      - ./logs/nginx/${NGINX_VERSION}:/opt/bitnami/nginx/logs:rw
+      # - ./public-html:/app:rw

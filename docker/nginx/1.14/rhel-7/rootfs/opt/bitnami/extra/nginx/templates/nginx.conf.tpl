@@ -31,13 +31,10 @@ http {
     access_log  "{{NGINX_LOGDIR}}/access.log";
 
     # no sendfile on OSX
-    sendfile       on;
-
-    # secure nginx expose version
-    server_tokens  off;
+    sendfile        on;
 
     tcp_nopush     on;
-    tcp_nodelay    off;
+    tcp_nodelay       off;
 
     #keepalive_timeout  0;
     keepalive_timeout  65;

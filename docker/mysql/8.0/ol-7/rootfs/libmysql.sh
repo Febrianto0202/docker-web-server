@@ -190,7 +190,7 @@ mysql_extra_flags() {
         fi
     fi
 
-    #echo "${dbExtraFlags[@]}"
+    echo "${dbExtraFlags[@]}"
 }
 
 ########################

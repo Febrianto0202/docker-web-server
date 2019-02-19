@@ -31,13 +31,10 @@ http {
     access_log  "{{NGINX_LOGDIR}}/access.log";
 
     # no sendfile on OSX
-    sendfile       on;
+    sendfile        on;
 
     tcp_nopush     on;
-    tcp_nodelay    off;
-
-    # secure nginx expose version
-    server_tokens  off;
+    tcp_nodelay       off;
 
     #keepalive_timeout  0;
     keepalive_timeout  65;
@@ -49,7 +46,7 @@ http {
 
     ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
 
-    include "{{NGINX_CONFDIR}}/vhosts/*.conf";
+  include "{{NGINX_CONFDIR}}/vhosts/*.conf";
 
   # HTTP Server
   server {

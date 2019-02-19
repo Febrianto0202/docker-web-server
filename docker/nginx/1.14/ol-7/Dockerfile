@@ -1,13 +1,14 @@
-FROM bitnami/oraclelinux-extras-base:7-r182
+FROM bitnami/oraclelinux-extras-base:7-r212
 LABEL maintainer "Bitnami <containers@bitnami.com>"
+
+ENV TIMEZONE="Asia/Jakarta"
 
 ENV BITNAMI_PKG_CHMOD="-R g+rwX" \
     BITNAMI_PKG_EXTRA_DIRS="/bitnami/nginx/conf" \
     HOME="/" \
     OS_ARCH="x86_64" \
     OS_FLAVOUR="ol-7" \
-    OS_NAME="linux" \
-    TIMEZONE="Asia/Jakarta"
+    OS_NAME="linux"
 
 # Install required system packages and dependencies
 RUN install_packages glibc keyutils-libs krb5-libs libcom_err libselinux nss-softokn-freebl openssl-libs pcre zlib
@@ -17,17 +18,9 @@ RUN ln -sf /dev/stdout /opt/bitnami/nginx/logs/access.log
 RUN ln -sf /dev/stderr /opt/bitnami/nginx/logs/error.log
 
 COPY rootfs /
-
-# RUN chmod 700 /prepare.sh
-# RUN ["chmod", "+x", "/prepare.sh"]
-# RUN chmod 700 /entrypoint.sh
-# RUN ["chmod", "+x", "/entrypoint.sh"]
-# RUN chmod 700 /run.sh
-# RUN ["chmod", "+x", "/run.sh"]
-
 RUN /prepare.sh
 ENV BITNAMI_APP_NAME="nginx" \
-    BITNAMI_IMAGE_VERSION="1.14.2-ol-7-r53" \
+    BITNAMI_IMAGE_VERSION="1.14.2-ol-7-r75" \
     NAMI_PREFIX="/.nami" \
     NGINX_DAEMON_GROUP="" \
     NGINX_DAEMON_USER="" \
@@ -39,7 +32,7 @@ RUN rm -f /etc/localtime
 RUN ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 RUN date
 
-EXPOSE 8080 443
+EXPOSE 8080
 
 WORKDIR /app
 USER 1001
