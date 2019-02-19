@@ -1,8 +1,8 @@
 server {
   listen 0.0.0.0:8080;
-  server_name myci-app.com;
+  server_name mytest.com;
 
-  root /public_html/ci-app;
+  root /public_html/test;
 
   location / {
     try_files $uri $uri/index.php;
