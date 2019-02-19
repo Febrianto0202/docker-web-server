@@ -26,6 +26,13 @@
 2. 1.13
 3. 1.14 
 
+## MySQL
+
+> You can custom MySQL version
+
+1. 8.0
+2. 5.7
+
 
 ## WEB APPLICATION
 
