@@ -34,8 +34,10 @@ services:
     ports:
       - "${ENV_MYSQL_PORT}:3306"
     volumes:
+      - ./config/mysql/my_custom.cnf:/opt/bitnami/mysql/conf/my_custom.cnf:ro
       - ./data/mysql/${DB_VERSION}:/bitnami/mysql/data:rw
       - ./logs/mysql/${DB_VERSION}:/opt/bitnami/mysql/logs:rw
+      # - ./scripts/mysql-dump:/docker-entrypoint-initdb.d:ro
     environment:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       - ALLOW_EMPTY_PASSWORD=${ENV_ALLOW_EMPTY_PASSWORD}
